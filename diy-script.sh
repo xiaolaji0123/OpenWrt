@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 修改默认IP
-sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generate
+# sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generate
 
 # 更改默认 Shell 为 zsh
 # sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
@@ -93,17 +93,25 @@ wget -P package/luci-app-mosdns/mosdns/patches https://raw.githubusercontent.com
 # Alist
 git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-app-alist
 
+# linkease/ddns.to
+git clone main https://github.com/linkease/nas-packages-luci nas_luci
+git clone master https://github.com/linkease/nas-packages nas
+
 # DDNS.to
-git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
-git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
+# git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
+# git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
 
 # linkease
-git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-linkease
-git_sparse_clone master https://github.com/linkease/nas-packages network/services/linkease
+# git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-linkease
+# git_sparse_clone master https://github.com/linkease/nas-packages network/services/linkease
 
 # iStore
 git_sparse_clone main https://github.com/linkease/istore-ui app-store-ui
 git_sparse_clone main https://github.com/linkease/istore luci
+
+# requires golang 1.22.x or latest version
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 
 # 在线用户
 git_sparse_clone main https://github.com/haiibo/packages luci-app-onliner
