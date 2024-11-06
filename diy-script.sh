@@ -97,6 +97,10 @@ git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-
 git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
 git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
 
+# linkease
+git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-linkease
+git_sparse_clone master https://github.com/linkease/nas-packages network/services/linkease
+
 # iStore
 git_sparse_clone main https://github.com/linkease/istore-ui app-store-ui
 git_sparse_clone main https://github.com/linkease/istore luci
