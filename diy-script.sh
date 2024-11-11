@@ -9,6 +9,10 @@
 # TTYD 免登录
 # sed -i 's|/bin/login|/bin/login -f root|g' feeds/packages/utils/ttyd/files/ttyd.config
 
+# luci 23.05
+sed -i '/openwrt-23.05/d' feeds.conf.default
+sed -i 's/^#\(.*luci\)/\1/' feeds.conf.default
+
 # 移除要替换的包
 rm -rf feeds/packages/net/mosdns
 rm -rf feeds/packages/net/msd_lite
@@ -92,6 +96,10 @@ wget -P package/luci-app-mosdns/mosdns/patches https://raw.githubusercontent.com
 
 # Alist
 git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-app-alist
+
+# luci-app-tailscale
+sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
+git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 
 # linkease/ddns.to
 git clone main https://github.com/linkease/nas-packages-luci nas_luci
