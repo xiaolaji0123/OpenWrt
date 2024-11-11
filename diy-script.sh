@@ -98,8 +98,8 @@ wget -P package/luci-app-mosdns/mosdns/patches https://raw.githubusercontent.com
 git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-app-alist
 
 # luci-app-tailscale
-sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
-git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
+# sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
+# git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 
 # linkease/ddns.to
 git clone main https://github.com/linkease/nas-packages-luci nas_luci
