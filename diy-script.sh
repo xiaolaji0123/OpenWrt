@@ -1,22 +1,13 @@
 #!/bin/bash
 
 # 修改默认IP
-# sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generate
+# sed -i 's/192.168.1.1/10.0.0.1/g' package/base-files/files/bin/config_generate
 
 # 更改默认 Shell 为 zsh
 # sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 # TTYD 免登录
 # sed -i 's|/bin/login|/bin/login -f root|g' feeds/packages/utils/ttyd/files/ttyd.config
-
-# x86切换内核版本 6.12
-sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.12/g' ./target/linux/x86/Makefile
-sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.12/g' ./target/linux/x86/Makefile
-
-# luci 23.05
-# sed -i 's/luci.git;openwrt-23.05/luci/g' feeds.conf.default
-sed -i '/openwrt-23.05/d' feeds.conf.default
-sed -i 's/^#\(.*luci\)/\1/' feeds.conf.default
 
 # 移除要替换的包
 rm -rf feeds/packages/net/mosdns
@@ -26,9 +17,7 @@ rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/luci/themes/luci-theme-netgear
 rm -rf feeds/luci/applications/luci-app-mosdns
 rm -rf feeds/luci/applications/luci-app-netdata
-rm -rf feeds/luci/applications/luci-app-pushbot
 rm -rf feeds/luci/applications/luci-app-serverchan
-rm -rf feeds/luci/applications/luci-app-aliyundrive-webdav
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
@@ -47,10 +36,7 @@ git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy package/luci-app
 git clone --depth=1 https://github.com/esirplayground/luci-app-poweroff package/luci-app-poweroff
 git clone --depth=1 https://github.com/destan19/OpenAppFilter package/OpenAppFilter
 git clone --depth=1 https://github.com/Jason6111/luci-app-netdata package/luci-app-netdata
-git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
-git clone https://github.com/kxdn3/luci-app-pushbot package/luci-app-pushbot
 git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-filebrowser luci-app-ssr-mudb-server
-git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-fileassistant
 git_sparse_clone openwrt-18.06 https://github.com/immortalwrt/luci applications/luci-app-eqos
 # git_sparse_clone master https://github.com/syb999/openwrt-19.07.1 package/network/services/msd_lite
 
@@ -77,12 +63,6 @@ sed -i "s|firmware_repo.*|firmware_repo 'https://github.com/haiibo/OpenWrt'|g" p
 # sed -i "s|kernel_path.*|kernel_path 'https://github.com/ophub/kernel'|g" package/luci-app-amlogic/root/etc/config/amlogic
 sed -i "s|ARMv8|ARMv8_PLUS|g" package/luci-app-amlogic/root/etc/config/amlogic
 
-# sirpdboy
-git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
-git clone https://github.com/sirpdboy/luci-app-autotimeset package/luci-app-autotimeset
-git clone https://github.com/sirpdboy/netspeedtest.git package/netspeedtest
-git clone https://github.com/sirpdboy/luci-app-partexp.git package/luci-app-partexp
-
 # SmartDNS
 git clone --depth=1 -b lede https://github.com/pymumu/luci-app-smartdns package/luci-app-smartdns
 git clone --depth=1 https://github.com/pymumu/openwrt-smartdns package/smartdns
@@ -92,43 +72,18 @@ git clone --depth=1 https://github.com/ximiTech/luci-app-msd_lite package/luci-a
 git clone --depth=1 https://github.com/ximiTech/msd_lite package/msd_lite
 
 # MosDNS
-# 使用v5-lua，默认的主分支不再支持lead，或者说不支持18.06
-# https://github.com/sbwml/luci-app-mosdns/commit/6f37807cf500d1418d33dfe43496269fac813cad
-git clone --depth=1 -b v5-lua https://github.com/sbwml/luci-app-mosdns package/luci-app-mosdns
-# mosdns: forward: avoid picking same upstream
-# https://github.com/sbwml/luci-app-mosdns/commit/805606d13743d6bfd9f6faeaec40a5ec544fe51d
-# https://github.com/sbwml/luci-app-mosdns/issues/268
-wget -P package/luci-app-mosdns/mosdns/patches https://raw.githubusercontent.com/sbwml/luci-app-mosdns/refs/heads/v5/mosdns/patches/200-forward-avoid-picking-same-upstream.patch
+git clone --depth=1 https://github.com/sbwml/luci-app-mosdns package/luci-app-mosdns
 
 # Alist
-git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-app-alist
-
-# aliyundrive-webdav
-git clone main https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
-
-# luci-app-tailscale
-# sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
-# git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
-
-# linkease/ddns.to
-git clone main https://github.com/linkease/nas-packages-luci nas_luci
-git clone master https://github.com/linkease/nas-packages nas
+git clone --depth=1 https://github.com/sbwml/luci-app-alist package/luci-app-alist
 
 # DDNS.to
-# git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
-# git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
-
-# linkease
-# git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-linkease
-# git_sparse_clone master https://github.com/linkease/nas-packages network/services/linkease
+git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
+git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
 
 # iStore
 git_sparse_clone main https://github.com/linkease/istore-ui app-store-ui
 git_sparse_clone main https://github.com/linkease/istore luci
-
-# requires golang 1.22.x or latest version
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 
 # 在线用户
 git_sparse_clone main https://github.com/haiibo/packages luci-app-onliner
@@ -143,13 +98,12 @@ sed -i 's/${g}.*/${a}${b}${c}${d}${e}${f}${hydrid}/g' package/lean/autocore/file
 sed -i 's/os.date()/os.date("%a %Y-%m-%d %H:%M:%S")/g' package/lean/autocore/files/*/index.htm
 
 # 修改版本为编译日期
-# date_version=$(date +"%y.%m.%d")
-# orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-# sed -i "s/${orig_version}/R${date_version} by Haiibo/g" package/lean/default-settings/files/zzz-default-settings
+date_version=$(date +"%y.%m.%d")
+orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+sed -i "s/${orig_version}/R${date_version} by Haiibo/g" package/lean/default-settings/files/zzz-default-settings
 
 # 修复 hostapd 报错
-# 注释原因：https://github.com/coolsnowwolf/lede/issues/12198#issuecomment-2147244780
-# cp -f $GITHUB_WORKSPACE/scripts/011-fix-mbo-modules-build.patch package/network/services/hostapd/patches/011-fix-mbo-modules-build.patch
+cp -f $GITHUB_WORKSPACE/scripts/011-fix-mbo-modules-build.patch package/network/services/hostapd/patches/011-fix-mbo-modules-build.patch
 
 # 修复 armv8 设备 xfsprogs 报错
 sed -i 's/TARGET_CFLAGS.*/TARGET_CFLAGS += -DHAVE_MAP_SYNC -D_LARGEFILE64_SOURCE/g' feeds/packages/utils/xfsprogs/Makefile
@@ -159,10 +113,6 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/..\/..\/luci
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/..\/..\/lang\/golang\/golang-package.mk/$(TOPDIR)\/feeds\/packages\/lang\/golang\/golang-package.mk/g' {}
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=@GHREPO/PKG_SOURCE_URL:=https:\/\/github.com/g' {}
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=@GHCODELOAD/PKG_SOURCE_URL:=https:\/\/codeload.github.com/g' {}
-
-# 修复编译失败
-# https://github.com/coolsnowwolf/lede/issues/12407#issuecomment-2293509784
-# sed -i '/^UBOOT_TARGETS := rk3528-evb rk3588-evb/s/^/#/' package/boot/uboot-rk35xx/Makefile
 
 # 取消主题默认设置
 find package/luci-theme-*/* -type f -name '*luci-theme-*' -print -exec sed -i '/set luci.main.mediaurlbase/d' {} \;
