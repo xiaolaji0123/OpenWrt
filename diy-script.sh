@@ -13,6 +13,10 @@
 sed -i '/openwrt-23.05/d' feeds.conf.default
 sed -i 's/^#\(.*luci\)/\1/' feeds.conf.default
 
+# x86切换内核版本 6.12
+sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.12/g' ./target/linux/x86/Makefile
+sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.12/g' ./target/linux/x86/Makefile
+
 # 移除要替换的包
 rm -rf feeds/packages/net/mosdns
 rm -rf feeds/packages/net/msd_lite
@@ -85,8 +89,11 @@ git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 
-# Add luci-app-lucky
+# lucky
 git clone --depth=1 https://github.com/gdy666/luci-app-lucky package/luci-app-lucky
+
+# tailscale
+git clone https://github.com/asvow/luci-app-tailscale package/luci-app-tailscale
 
 # DDNS.to
 git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
