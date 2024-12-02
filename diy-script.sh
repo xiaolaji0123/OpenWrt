@@ -85,6 +85,9 @@ git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 
+# Add luci-app-lucky
+git clone --depth=1 https://github.com/gdy666/luci-app-lucky package/luci-app-lucky
+
 # DDNS.to
 git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
 git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
