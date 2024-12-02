@@ -9,6 +9,10 @@
 # TTYD 免登录
 # sed -i 's|/bin/login|/bin/login -f root|g' feeds/packages/utils/ttyd/files/ttyd.config
 
+# x86切换内核版本 6.12
+sed -i 's/KERNEL_PATCHVER:=*.*/KERNEL_PATCHVER:=6.12/g' ./target/linux/x86/Makefile
+sed -i 's/KERNEL_TESTING_PATCHVER:=*.*/KERNEL_TESTING_PATCHVER:=6.12/g' ./target/linux/x86/Makefile
+
 # luci 23.05
 # sed -i 's/luci.git;openwrt-23.05/luci/g' feeds.conf.default
 sed -i '/openwrt-23.05/d' feeds.conf.default
