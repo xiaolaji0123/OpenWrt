@@ -28,6 +28,7 @@ rm -rf feeds/luci/applications/luci-app-mosdns
 rm -rf feeds/luci/applications/luci-app-netdata
 rm -rf feeds/luci/applications/luci-app-pushbot
 rm -rf feeds/luci/applications/luci-app-serverchan
+rm -rf feeds/luci/applications/luci-app-aliyundrive-webdav
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
@@ -101,6 +102,9 @@ wget -P package/luci-app-mosdns/mosdns/patches https://raw.githubusercontent.com
 
 # Alist
 git clone --depth=1 -b lua https://github.com/sbwml/luci-app-alist package/luci-app-alist
+
+# aliyundrive-webdav
+git clone main https://github.com/messense/aliyundrive-webdav package/luci-app-aliyundrive-webdav
 
 # luci-app-tailscale
 # sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
